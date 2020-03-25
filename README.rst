@@ -1,4 +1,4 @@
-|License| |CLA-Assistant| |Pure-Storage-Ansible-CI|
+|License|  |CLA-Assistant|  |Pure-Storage-Ansible-CI|
 
 ================
 Pure1-Collection
