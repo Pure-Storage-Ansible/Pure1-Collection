@@ -7,8 +7,14 @@ The Pure Storage Pure1 collection consists of the latest versions of the Pure1 m
 ## Requirements
 
 - Ansible 2.9 or later
-- Access to Pure Storage Pure1
-- py-pure-client Python SDK
+- Authorized API Application ID for Pure Storage Pure1 and associated Private Key
+  Refer to Pure Storage documentation on how to create these. 
+- py-pure-client >= 1.14.1
+
+## Available Modules
+
+- pure1_array_tags - Manage array tags for managed devices in Pure1
+- pure1_info - Get information on fleet configuration
 
 ## Instructions
 
@@ -22,10 +28,15 @@ ansible-galaxy collection install purestorage.pure1 -p ~/.ansible/collections
 ## Example Playbook
 ```yaml
 - hosts: localhost
-  gather_facts: true
   collections:
-    - puestorage.pure1
+    - purestorage.pure1
   tasks:
+  - name: Collect information for Pure Storage fleet in Pure1
+    pure1_info:
+      gather_subset: all
+      app_id: <Pure1 API Application ID>
+      key_file: <private key file name>
+      password: <private key password>
 ```
 
 ## License
