@@ -209,7 +209,7 @@ def main():
         dict(gather_subset=dict(default="minimum", type="list", elements="str"))
     )
 
-    module = AnsibleModule(argument_spec, supports_check_mode=False)
+    module = AnsibleModule(argument_spec, supports_check_mode=True)
     pure_1 = get_pure1(module)
 
     subset = [test.lower() for test in module.params["gather_subset"]]
