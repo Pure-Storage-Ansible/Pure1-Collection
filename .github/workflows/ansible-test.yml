@@ -62,6 +62,5 @@ jobs:
       # and all python versions ansible supports.
       - name: Run sanity tests
         run: |
-          pwd
-          ls -alrt
+          cd ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}
           ansible-test sanity --docker -v --color
