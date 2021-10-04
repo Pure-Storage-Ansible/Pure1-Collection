@@ -1,1 +1,2 @@
 plugins/modules/pure1_info.py validate-modules:return-syntax-error
+plugins/modules/pure1_network_interfaces.py validate-modules:return-syntax-error
