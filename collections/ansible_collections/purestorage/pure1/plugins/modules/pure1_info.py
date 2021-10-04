@@ -67,26 +67,52 @@ pure1_info:
         "appliances": {
             "FlashArray": {
                 "CBS-AZURE": {
+                    "bandwidth (read) [MB/s]": 0.0,
+                    "bandwidth (write) [MB/s]": 0.0,
                     "fqdn": "",
+                    "iops (read)": 0,
+                    "iops (write)": 0,
+                    "latency (read) [ms]": 0.0,
+                    "latency (write) [ms]": 0.0,
                     "model": "CBS-V10MUR1",
                     "os_version": "6.1.4"
                 },
                 "pure-fa1": {
+                    "bandwidth (read) [MB/s]": 2.525,
+                    "bandwidth (write) [MB/s]": 0.156,
                     "fqdn": "pure-fa1.acme.com",
+                    "iops (read)": 587,
+                    "iops (write)": 844,
+                    "latency (read) [ms]": 1.17,
+                    "latency (write) [ms]": 0.55,
+                    "load [%]": 35.88,
                     "model": "FA-405",
                     "os_version": "5.3.12"
                 },
                 "pure-fa2": {
-                    "fqdn": "pue-fa2.acme.com",
+                    "bandwidth (read) [MB/s]": 11.324,
+                    "bandwidth (write) [MB/s]": 7.349,
+                    "fqdn": "pure-fa2.acme.com",
+                    "iops (read)": 1019,
+                    "iops (write)": 2313,
+                    "latency (read) [ms]": 0.06,
+                    "latency (write) [ms]": 0.32,
+                    "load [%]": 13.67,
                     "model": "FA-C60",
                     "os_version": "6.1.6"
                 }
             },
             "FlashBlade": {
                 "pure-fb1": {
-                    "fqdn": "pure-fb1.com",
+                    "bandwidth (read) [MB/s]": 0.313,
+                    "bandwidth (write) [MB/s]": 0.001,
+                    "fqdn": "pure-fb1.acme.com",
+                    "iops (read)": 209,
+                    "iops (write)": 447,
+                    "latency (read) [ms]": 0.6,
+                    "latency (write) [ms]": 0.59,
                     "model": "FlashBlade",
-                    "os_version": "3.2.0"
+                    "os_version": "3.2.3"
                 }
             }
         },
@@ -168,7 +194,7 @@ def generate_subscriptions_dict(pure_1):
 
 
 def generate_appliances_dict(module, pure_1):
-    names_info = {"FlashArray": {}, "FlashBlade": {}, "ObjectStore": {}}
+    names_info = {"FlashArray": {}, "FlashBlade": {}, "ObjectEngine": {}}
     appliances = list(pure_1.get_arrays().items)
     for appliance in range(0, len(appliances)):
         name = appliances[appliance].name
@@ -182,6 +208,121 @@ def generate_appliances_dict(module, pure_1):
                 "model": appliances[appliance].model,
                 "fqdn": fqdn,
             }
+            try:
+                names_info["FlashArray"][name]["bandwidth (read) [MB/s]"] = round(
+                    list(
+                        pure_1.get_metrics_history(
+                            names=["array_read_bandwidth"],
+                            resource_names=[name],
+                            aggregation="max",
+                            resolution=180000,
+                            end_time=int(time.time()) * 1000,
+                            start_time=(int(time.time()) * 1000) - 18000000,
+                        ).items
+                    )[0].data[-1][1]
+                    / 104857600,
+                    3,
+                )
+            except IndexError:
+                pass
+            try:
+                names_info["FlashArray"][name]["bandwidth (write) [MB/s]"] = round(
+                    list(
+                        pure_1.get_metrics_history(
+                            names=["array_write_bandwidth"],
+                            resource_names=[name],
+                            aggregation="max",
+                            resolution=180000,
+                            end_time=int(time.time()) * 1000,
+                            start_time=(int(time.time()) * 1000) - 18000000,
+                        ).items
+                    )[0].data[-1][1]
+                    / 104857600,
+                    3,
+                )
+            except IndexError:
+                pass
+            try:
+                names_info["FlashArray"][name]["latency (read) [ms]"] = round(
+                    list(
+                        pure_1.get_metrics_history(
+                            names=["array_read_latency_us"],
+                            resource_names=[name],
+                            aggregation="max",
+                            resolution=180000,
+                            end_time=int(time.time()) * 1000,
+                            start_time=(int(time.time()) * 1000) - 18000000,
+                        ).items
+                    )[0].data[-1][1]
+                    / 1000,
+                    2,
+                )
+            except IndexError:
+                pass
+            try:
+                names_info["FlashArray"][name]["latency (write) [ms]"] = round(
+                    list(
+                        pure_1.get_metrics_history(
+                            names=["array_write_latency_us"],
+                            resource_names=[name],
+                            aggregation="max",
+                            resolution=180000,
+                            end_time=int(time.time()) * 1000,
+                            start_time=(int(time.time()) * 1000) - 18000000,
+                        ).items
+                    )[0].data[-1][1]
+                    / 1000,
+                    2,
+                )
+            except IndexError:
+                pass
+            try:
+                names_info["FlashArray"][name]["iops (read)"] = round(
+                    list(
+                        pure_1.get_metrics_history(
+                            names=["array_read_iops"],
+                            resource_names=[name],
+                            aggregation="max",
+                            resolution=180000,
+                            end_time=int(time.time()) * 1000,
+                            start_time=(int(time.time()) * 1000) - 18000000,
+                        ).items
+                    )[0].data[-1][1]
+                )
+            except IndexError:
+                pass
+            try:
+                names_info["FlashArray"][name]["iops (write)"] = round(
+                    list(
+                        pure_1.get_metrics_history(
+                            names=["array_write_iops"],
+                            resource_names=[name],
+                            aggregation="max",
+                            resolution=180000,
+                            end_time=int(time.time()) * 1000,
+                            start_time=(int(time.time()) * 1000) - 18000000,
+                        ).items
+                    )[0].data[-1][1]
+                )
+            except IndexError:
+                pass
+            try:
+                names_info["FlashArray"][name]["load [%]"] = round(
+                    list(
+                        pure_1.get_metrics_history(
+                            names=["array_total_load"],
+                            resource_names=[name],
+                            aggregation="max",
+                            resolution=180000,
+                            end_time=int(time.time()) * 1000,
+                            start_time=(int(time.time()) * 1000) - 18000000,
+                        ).items
+                    )[0].data[-1][1]
+                    * 100,
+                    3,
+                )
+            except IndexError:
+                pass
         elif appliances[appliance].os == "Elasticity":
             names_info["ObjectEngine"][name] = {
                 "os_version": appliances[appliance].version,
@@ -194,6 +335,104 @@ def generate_appliances_dict(module, pure_1):
                 "model": appliances[appliance].model,
                 "fqdn": fqdn,
             }
+            try:
+                names_info["FlashBlade"][name]["bandwidth (read) [MB/s]"] = round(
+                    list(
+                        pure_1.get_metrics_history(
+                            names=["array_read_bandwidth"],
+                            resource_names=[name],
+                            aggregation="max",
+                            resolution=180000,
+                            end_time=int(time.time()) * 1000,
+                            start_time=(int(time.time()) * 1000) - 18000000,
+                        ).items
+                    )[0].data[-1][1]
+                    / 104857600,
+                    3,
+                )
+            except IndexError:
+                pass
+            try:
+                names_info["FlashBlade"][name]["bandwidth (write) [MB/s]"] = round(
+                    list(
+                        pure_1.get_metrics_history(
+                            names=["array_write_bandwidth"],
+                            resource_names=[name],
+                            aggregation="max",
+                            resolution=180000,
+                            end_time=int(time.time()) * 1000,
+                            start_time=(int(time.time()) * 1000) - 18000000,
+                        ).items
+                    )[0].data[-1][1]
+                    / 104857600,
+                    3,
+                )
+            except IndexError:
+                pass
+            try:
+                names_info["FlashBlade"][name]["iops (read)"] = round(
+                    list(
+                        pure_1.get_metrics_history(
+                            names=["array_read_iops"],
+                            resource_names=[name],
+                            aggregation="max",
+                            resolution=180000,
+                            end_time=int(time.time()) * 1000,
+                            start_time=(int(time.time()) * 1000) - 18000000,
+                        ).items
+                    )[0].data[-1][1]
+                )
+            except IndexError:
+                pass
+            try:
+                names_info["FlashBlade"][name]["iops (write)"] = round(
+                    list(
+                        pure_1.get_metrics_history(
+                            names=["array_write_iops"],
+                            resource_names=[name],
+                            aggregation="max",
+                            resolution=180000,
+                            end_time=int(time.time()) * 1000,
+                            start_time=(int(time.time()) * 1000) - 18000000,
+                        ).items
+                    )[0].data[-1][1]
+                )
+            except IndexError:
+                pass
+            try:
+                names_info["FlashBlade"][name]["latency (read) [ms]"] = round(
+                    list(
+                        pure_1.get_metrics_history(
+                            names=["array_read_latency_us"],
+                            resource_names=[name],
+                            aggregation="max",
+                            resolution=180000,
+                            end_time=int(time.time()) * 1000,
+                            start_time=(int(time.time()) * 1000) - 18000000,
+                        ).items
+                    )[0].data[-1][1]
+                    / 1000,
+                    2,
+                )
+            except IndexError:
+                pass
+            try:
+                names_info["FlashBlade"][name]["latency (write) [ms]"] = round(
+                    list(
+                        pure_1.get_metrics_history(
+                            names=["array_write_latency_us"],
+                            resource_names=[name],
+                            aggregation="max",
+                            resolution=180000,
+                            end_time=int(time.time()) * 1000,
+                            start_time=(int(time.time()) * 1000) - 18000000,
+                        ).items
+                    )[0].data[-1][1]
+                    / 1000,
+                    2,
+                )
+            except IndexError:
+                pass
         else:
             module.warning(
                 "Unknown operating system detected: {0}.".format(
