@@ -31,7 +31,8 @@ options:
   gather_subset:
     description:
       - When supplied, this argument will define the information to be collected.
-        Possible values for this include all, minimum, appliances, subscriptions
+        Possible values for this include all, minimum, appliances, subscriptions,
+        contracts
     type: list
     elements: str
     required: false
@@ -116,6 +117,23 @@ pure1_info:
                 }
             }
         },
+        "contracts": {
+            "pure-fa1": {
+                "contract_end": "2024-10-12",
+                "contract_start": "2019-10-13",
+                "contract_state": "Active"
+            },
+            "pure-fa2": {
+                "contract_end": "2021-02-17",
+                "contract_start": "2015-01-06",
+                "contract_state": "Expired"
+            },
+            "pure-fa3": {
+                "contract_end": "2021-10-07",
+                "contract_start": "2015-01-06",
+                "contract_state": "Grace Period"
+            }
+        },
         "default": {
             "FlashArrays": 3,
             "FlashBlades": 1,
@@ -138,6 +156,7 @@ from ansible_collections.purestorage.pure1.plugins.module_utils.pure1 import (
     get_pure1,
     pure1_argument_spec,
 )
+import datetime
 import time
 
 
@@ -191,6 +210,44 @@ def generate_subscriptions_dict(pure_1):
                 "status": subscriptions[subscription].status,
             }
     return subscriptions_info
+
+
+def generate_contract_dict(pure_1):
+    contract_info = {}
+    grace_period = 2592000000  # 30 days in ms
+    contract_start_epoch = None
+    contract_end_epoch = None
+    current_date = int(time.time() * 1000)
+    appliances = list(pure_1.get_arrays().items)
+    for appliance in range(0, len(appliances)):
+        contract_state = "Expired"
+        name = appliances[appliance].name
+        contract_info[name] = {}
+        contract_data = list(
+            pure_1.get_arrays_support_contracts(
+                filter="resource.name='" + name + "'"
+            ).items
+        )
+        if contract_data:
+            contract_start_epoch = getattr(contract_data[0], "start_date", None)
+            contract_end_epoch = getattr(contract_data[0], "end_date", None)
+            if contract_start_epoch:
+                contract_start = datetime.datetime.fromtimestamp(
+                    int(contract_start_epoch / 1000)
+                ).strftime("%Y-%m-%d")
+            if contract_end_epoch:
+                contract_end = datetime.datetime.fromtimestamp(
+                    int(contract_end_epoch / 1000)
+                ).strftime("%Y-%m-%d")
+            contract_info[name]["contract_start"] = contract_start
+            contract_info[name]["contract_end"] = contract_end
+            if contract_end_epoch:
+                if current_date <= contract_end_epoch:
+                    contract_state = "Active"
+                elif contract_end_epoch + grace_period >= current_date:
+                    contract_state = "Grace Period"
+        contract_info[name]["contract_state"] = contract_state
+    return contract_info
 
 
 def generate_appliances_dict(module, pure_1):
@@ -457,6 +514,7 @@ def main():
         "minimum",
         "appliances",
         "subscriptions",
+        "contracts",
     )
     subset_test = (test in valid_subsets for test in subset)
     if not all(subset_test):
@@ -473,6 +531,8 @@ def main():
         info["appliances"] = generate_appliances_dict(module, pure_1)
     if "subscriptions" in subset or "all" in subset:
         info["subscriptions"] = generate_subscriptions_dict(pure_1)
+    if "contracts" in subset or "all" in subset:
+        info["contracts"] = generate_contract_dict(pure_1)
 
     module.exit_json(changed=False, pure1_info=info)
 
