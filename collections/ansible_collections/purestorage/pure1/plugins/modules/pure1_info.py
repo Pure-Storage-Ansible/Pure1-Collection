@@ -42,7 +42,7 @@ extends_documentation_fragment:
 
 EXAMPLES = r"""
 - name: collect default set of information
-  pure1_info:
+  purestorage.pure1.pure1_info:
     register: pure1_info
 
 - name: show default information
@@ -50,7 +50,7 @@ EXAMPLES = r"""
     msg: "{{ pure1_info['pure1_info']['default'] }}"
 
 - name: collect all information
-  pure1_info:
+  purestorage.pure1.pure1_info:
     gather_subset:
       - all
 - name: show all information

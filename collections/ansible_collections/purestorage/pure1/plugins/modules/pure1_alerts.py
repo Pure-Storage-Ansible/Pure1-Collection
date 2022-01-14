@@ -45,7 +45,7 @@ extends_documentation_fragment:
 
 EXAMPLES = r"""
 - name: collect critical alerts for arrayt foo
-  pure1_alerts:
+  purestorage.pure1.pure1_alerts:
     name: foo
     severity: critical
 """
