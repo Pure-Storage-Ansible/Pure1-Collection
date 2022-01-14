@@ -34,8 +34,8 @@ extends_documentation_fragment:
 """
 
 EXAMPLES = r"""
-- name: collect network interface details for arrayt foo
-  pure1_network_interfaces:
+- name: collect network interface details for array foo
+  purestorage.pure1.pure1_network_interfaces:
     name: foo
 """
 

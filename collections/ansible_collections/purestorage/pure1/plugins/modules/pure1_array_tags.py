@@ -49,7 +49,7 @@ extends_documentation_fragment:
 
 EXAMPLES = r"""
 - name: Create new tags for array foo
-  pure1_array_tags:
+  purestorage.pure1.pure1_array_tags:
     name: foo
     tag:
     - 'key1:value1'
@@ -59,7 +59,7 @@ EXAMPLES = r"""
     password: PassW0rd!
 
 - name: Remove an existing tag for array foo
-  purefa_volume_tags:
+  purestorage.pure1.pure1_array_tags:
     name: foo
     tag:
     - 'key1:value1'
@@ -69,7 +69,7 @@ EXAMPLES = r"""
     state: absent
 
 - name: Update an existing tag for array foo
-  purefa_volume_tags:
+  purestorage.pure1.pure1_array_tags:
     name: foo
     tag:
     - 'key1:value2'
