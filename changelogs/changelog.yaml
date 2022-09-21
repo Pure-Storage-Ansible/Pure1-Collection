@@ -1,0 +1,10 @@
+ancestor: null
+releases:
+  1.0.0:
+    changes:
+      major_changes:
+        - pure1_array_tags - New module to manage Pure1 array tags
+        - pure1_info - New module for gathering Pure1 information
+    fragments:
+      - 4_add_first_modules.yaml
+    release_date: '2021-06-28'
