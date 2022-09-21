@@ -1,0 +1,10 @@
+{
+    "docs": "https://docs.ansible.com/ansible/2.10/dev_guide/testing/sanity/ansible-doc.html", 
+    "results": [
+        {
+            "message": "The test `ansible-test sanity --test ansible-doc` [[explain](https://docs.ansible.com/ansible/2.10/dev_guide/testing/sanity/ansible-doc.html)] failed with the error:", 
+            "output": "Command \"ansible-doc -t module purestorage.pure1.pure1_alerts purestorage.pure1.pure1_array_tags purestorage.pure1.pure1_info\" returned exit status 1.\n>>> Standard Error\nERROR! module purestorage.pure1.pure1_alerts missing documentation (or could not parse documentation): while parsing a flow mapping\n  in \"<unicode string>\", line 8, column 14\ndid not find expected ',' or '}'\n  in \"<unicode string>\", line 12, column 13"
+        }
+    ], 
+    "verified": false
+}
