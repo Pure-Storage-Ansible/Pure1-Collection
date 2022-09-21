@@ -1,0 +1,10 @@
+{
+    "docs": "https://docs.ansible.com/ansible/2.10/dev_guide/testing/sanity/validate-modules.html", 
+    "results": [
+        {
+            "message": "The test `ansible-test sanity --test validate-modules` [[explain](https://docs.ansible.com/ansible/2.10/dev_guide/testing/sanity/validate-modules.html)] failed with 1 error:", 
+            "output": "plugins/modules/pure1_alerts.py:0:0: documentation-error: Unknown DOCUMENTATION error, see TRACE: while parsing a flow mapping\n  in \"<unicode string>\", line 7, column 14\ndid not find expected ',' or '}'\n  in \"<unicode string>\", line 11, column 13"
+        }
+    ], 
+    "verified": false
+}
