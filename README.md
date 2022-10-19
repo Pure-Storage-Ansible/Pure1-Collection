@@ -15,8 +15,7 @@ The Pure Storage Pure1 collection consists of the latest versions of the Pure1 m
 - Ansible 2.9 or later
 - Authorized API Application ID for Pure Storage Pure1 and associated Private Key
   Refer to Pure Storage documentation on how to create these. 
-- py-pure-client >= 1.14.1
-- time
+- py-pure-client
 - datetime
 
 ## Available Modules
