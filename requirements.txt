@@ -1,3 +1,2 @@
 py-pure-client
-time
 datetime
