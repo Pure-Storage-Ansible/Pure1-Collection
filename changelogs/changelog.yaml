@@ -8,3 +8,20 @@ releases:
     fragments:
       - 4_add_first_modules.yaml
     release_date: '2021-06-28'
+  1.1.0:
+    changes:
+      minor_changes:
+        - All - Update documentation to use FQCNs
+        - pure1_info - Add array performance data and load (FA only). Add support contract
+          status.
+    fragments:
+      - 13_fcqn.yaml
+      - 8_add_perf_data.yaml
+    modules:
+      - description: Collect array alerts from Pure1 based on severity
+        name: pure1_alerts
+        namespace: ''
+      - description: Collect array netowrk interface details from Pure1
+        name: pure1_network_interfaces
+        namespace: ''
+    release_date: '2023-01-26'

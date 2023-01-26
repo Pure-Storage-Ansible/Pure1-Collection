@@ -1,15 +1,39 @@
+objects:
+  role: {}
 plugins:
   become: {}
   cache: {}
   callback: {}
   cliconf: {}
   connection: {}
+  filter: {}
   httpapi: {}
   inventory: {}
   lookup: {}
-  module: {}
+  module:
+    pure1_alerts:
+      description: Collect array alerts from Pure1 based on severity
+      name: pure1_alerts
+      namespace: ''
+      version_added: 1.1.0
+    pure1_array_tags:
+      description: Manage array tags in Pure1
+      name: pure1_array_tags
+      namespace: ''
+      version_added: 1.0.0
+    pure1_info:
+      description: Collect information from Pure1
+      name: pure1_info
+      namespace: ''
+      version_added: 1.0.0
+    pure1_network_interfaces:
+      description: Collect array netowrk interface details from Pure1
+      name: pure1_network_interfaces
+      namespace: ''
+      version_added: 1.1.0
   netconf: {}
   shell: {}
   strategy: {}
+  test: {}
   vars: {}
-version: 1.0.0
+version: 1.1.0
