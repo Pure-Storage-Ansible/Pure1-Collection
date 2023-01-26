@@ -245,7 +245,6 @@ from ansible_collections.purestorage.pure1.plugins.module_utils.pure1 import (
     get_pure1,
     pure1_argument_spec,
 )
-import time
 
 
 def main():
