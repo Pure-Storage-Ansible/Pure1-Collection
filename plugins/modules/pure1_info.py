@@ -23,7 +23,7 @@ description:
   - Collect information from a Pure1.
   - By default, the module will collect basic
     information including counts for appliances, volumes, filesystems, snapshots
-    and buckets. Fleet capacity and data reduction rates are also provided.
+    and buckets. Fileset capacity and data reduction rates are also provided.
   - Additional information can be collected based on the configured set of arguements.
 author:
   - Pure Storage ansible Team (@sdodsley) <pure-ansible-team@purestorage.com>
@@ -32,7 +32,7 @@ options:
     description:
       - When supplied, this argument will define the information to be collected.
         Possible values for this include all, minimum, appliances, subscriptions,
-        contracts
+        contracts and environmental.
     type: list
     elements: str
     required: false
@@ -210,6 +210,122 @@ def generate_subscriptions_dict(pure_1):
                 "status": subscriptions[subscription].status,
             }
     return subscriptions_info
+
+
+def generate_esg_dict(module, pure_1):
+    esg_info = {}
+    current_date = int(time.time() * 1000)
+    appliances = list(pure_1.get_assessment_sustainability_arrays().items)
+    for appliance in range(0, len(appliances)):
+        name = appliances[appliance].name
+        esg_info[name] = {
+            "insights": [],
+            "location": {},
+            "assessment": {},
+            "reporting_status": {},
+        }
+        if getattr(appliances[appliance], "install_address", False):
+            esg_info[name]["location"] = {
+                "longitude": getattr(
+                    appliances[appliance].install_address.geolocation,
+                    "longitude",
+                    None,
+                ),
+                "latitude": getattr(
+                    appliances[appliance].install_address.geolocation,
+                    "latitude",
+                    None,
+                ),
+                "updated": getattr(
+                    appliances[appliance].install_address,
+                    "updated",
+                    None,
+                ),
+                "address": getattr(
+                    appliances[appliance].install_address,
+                    "street_address",
+                    None,
+                ),
+            }
+            if esg_info[name]["location"]["updated"]:
+                esg_info[name]["location"]["updated"] = time.strftime(
+                    "%Y-%m-%d %H:%M:%S UTC",
+                    time.gmtime(esg_info[name]["location"]["updated"] / 1000),
+                )
+        if appliances[appliance].reporting_status != "assessment_ready":
+            esg_info[name]["reporting_status"] = appliances[appliance].reporting_status
+        else:
+            esg_info[name]["assessment"] = {
+                "array_data_reduction": getattr(
+                    appliances[appliance].assessment, "array_data_reduction", None
+                ),
+                "assessment_level": getattr(
+                    appliances[appliance].assessment, "assessment_level", None
+                ),
+                "blades": getattr(appliances[appliance].assessment, "blades", None),
+                "capacity_utilization": getattr(
+                    appliances[appliance].assessment, "capacity_utilization", None
+                ),
+                "chassis": getattr(appliances[appliance].assessment, "chassis", None),
+                "power_average": getattr(
+                    appliances[appliance].assessment, "power_average", None
+                ),
+                "power_per_usable_capacity": getattr(
+                    appliances[appliance].assessment, "power_per_usable_capacity", None
+                ),
+                "power_per_used_space": getattr(
+                    appliances[appliance].assessment, "power_per_used_space", None
+                ),
+                "power_typical_spec": getattr(
+                    appliances[appliance].assessment, "power_typical_spec", None
+                ),
+                "power_peak_spec": getattr(
+                    appliances[appliance].assessment, "power_peak_spec", None
+                ),
+                "heat_typical_spec": getattr(
+                    appliances[appliance].assessment, "heat_typical_spec", None
+                ),
+                "heat_peak_spec": getattr(
+                    appliances[appliance].assessment, "heat_peak_spec", None
+                ),
+                "heat_average": getattr(
+                    appliances[appliance].assessment, "heat_average", None
+                ),
+                "rack_units": getattr(
+                    appliances[appliance].assessment, "rack_units", None
+                ),
+                "shelves": getattr(appliances[appliance].assessment, "shelves", None),
+                "array_total_load": getattr(
+                    appliances[appliance].assessment, "array_total_load", None
+                ),
+                "start": getattr(
+                    appliances[appliance].assessment, "interval_start", None
+                ),
+                "end": getattr(appliances[appliance].assessment, "interval_end", None),
+            }
+            if esg_info[name]["assessment"]["start"]:
+                esg_info[name]["assessment"]["start"] = time.strftime(
+                    "%Y-%m-%d %H:%M:%S UTC",
+                    time.gmtime(esg_info[name]["assessment"]["start"] / 1000),
+                )
+            if esg_info[name]["assessment"]["end"]:
+                esg_info[name]["assessment"]["end"] = time.strftime(
+                    "%Y-%m-%d %H:%M:%S UTC",
+                    time.gmtime(esg_info[name]["assessment"]["end"] / 1000),
+                )
+    insights = list(pure_1.get_assessment_sustainability_insights_arrays().items)
+    for insight in range(0, len(insights)):
+        name = getattr(insights[insight].resource, "name", None)
+        if name:
+            esg_info[name]["insights"].append(
+                {
+                    "fqdn": insights[insight].resource.fqdn,
+                    "type": insights[insight].type,
+                    "severity": insights[insight].severity,
+                    "insight_data": insights[insight].additional_data,
+                }
+            )
+    return esg_info
 
 
 def generate_contract_dict(pure_1):
@@ -515,6 +631,7 @@ def main():
         "appliances",
         "subscriptions",
         "contracts",
+        "environmental",
     )
     subset_test = (test in valid_subsets for test in subset)
     if not all(subset_test):
@@ -533,6 +650,8 @@ def main():
         info["subscriptions"] = generate_subscriptions_dict(pure_1)
     if "contracts" in subset or "all" in subset:
         info["contracts"] = generate_contract_dict(pure_1)
+    if "environmental" in subset or "all" in subset:
+        info["environmental"] = generate_esg_dict(module, pure_1)
 
     module.exit_json(changed=False, pure1_info=info)
 
