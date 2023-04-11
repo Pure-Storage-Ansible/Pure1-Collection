@@ -25,3 +25,10 @@ releases:
         name: pure1_network_interfaces
         namespace: ''
     release_date: '2023-01-26'
+  1.2.0:
+    changes:
+      minor_changes:
+        - pure1_info - Add environmental subset for ESG data and platform insights
+    fragments:
+      - 20_add_esg.yaml
+    release_date: '2023-04-11'
