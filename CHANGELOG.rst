@@ -5,6 +5,14 @@ Purestorage.Pure1 Release Notes
 .. contents:: Topics
 
 
+v1.2.0
+======
+
+Minor Changes
+-------------
+
+- pure1_info - Add environmental subset for ESG data and platform insights
+
 v1.1.0
 ======
 
