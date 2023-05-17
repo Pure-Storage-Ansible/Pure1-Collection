@@ -54,34 +54,7 @@ RETURN = r"""
 alert_info:
   description: Returns information on appliance alerts
   returned: always
-  type: complex
-  sample: {
-     "alert_info": {
-        "0": {
-            "appliance_name": "pure-fa1.acme.com",
-            "category": "array",
-            "closed": "2021-10-04 16:52:23",
-            "code": 25,
-            "component_name": "array.capacity",
-            "component_type": "storage",
-            "created": "2020-07-22 19:41:17",
-            "notified": "2021-10-04 06:49:34",
-            "summary": "storage array.capacity high utilization",
-            "updated": "2021-10-04 14:36:14"
-        },
-        "1": {
-            "appliance_name": "pure-fa2.acme.com",
-            "category": "array",
-            "code": 25,
-            "component_name": "array.capacity",
-            "component_type": "storage",
-            "created": "2021-08-05 15:15:14",
-            "notified": "2021-10-04 12:40:07",
-            "summary": "storage array.capacity high utilization",
-            "updated": "2021-10-04 15:50:15"
-        },
-    }
-}
+  type: dict
 """
 
 
