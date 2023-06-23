@@ -4,5 +4,5 @@ plugin_routing:
     modules:
         pure1_network_interfaces:
             deprecation:
-                removed_in: "2.0.0"
+                removed_in: 2.0.0
                 warning_text: "Use pure1_nics instead."
