@@ -86,7 +86,7 @@ def generate_pods_dict(module, pure_1):
             }
         }
         if getattr(pods[pod], "source", None):
-            pods_details[pod_name]["source"] = pods[pod].source.name
+            pod_details[pod_name]["source"] = pods[pod].source.name
         pods_info[array].append(pod_details)
     return pods_info
 
