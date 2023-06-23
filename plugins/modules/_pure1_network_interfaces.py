@@ -10,7 +10,7 @@ __metaclass__ = type
 
 ANSIBLE_METADATA = {
     "metadata_version": "1.1",
-    "status": ["preview"],
+    "status": ["deprecated"],
     "supported_by": "community",
 }
 
@@ -18,6 +18,10 @@ DOCUMENTATION = r"""
 ---
 module: pure1_network_interfaces
 version_added: '1.1.0'
+deprecated:
+  removed_in: '1.7.0'
+  why: Replaced by more functional module
+  alternative: Use M(purestorage.pure1.pure1_nics) instead
 short_description: Collect array netowrk interface details from Pure1
 description:
   - Collect array network interface details from a Pure1.
