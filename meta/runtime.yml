@@ -1,2 +1,8 @@
 ---
 requires_ansible: '>=2.9.10'
+plugin_routing:
+    modules:
+        pure1_network_interfaces:
+            deprecation:
+                removed_in: "2.0.0"
+                warning_text: "Use pure1_nics instead."
