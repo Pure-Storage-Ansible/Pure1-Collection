@@ -19,7 +19,7 @@ DOCUMENTATION = r"""
 module: pure1_network_interfaces
 version_added: '1.1.0'
 deprecated:
-  removed_in: '1.7.0'
+  removed_in: '2.0.0'
   why: Replaced by more functional module
   alternative: Use M(purestorage.pure1.pure1_nics) instead
 short_description: Collect array netowrk interface details from Pure1
