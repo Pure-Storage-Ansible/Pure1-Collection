@@ -86,7 +86,7 @@ def generate_nics_dict(module, pure_1):
                 "hwaddr": getattr(nics[nic], "hwaddr", None),
                 "netmask": getattr(nics[nic], "netmask", None),
                 "mtu": getattr(nics[nic], "mtu", None),
-                "speed": round(getattr(nicss[nic], "speed", 0) / 1000000000),
+                "speed": round(getattr(nics[nic], "speed", 0) / 1000000000),
                 "enabled": nics[nic].enabled,
                 "services": [],
                 "subinterfaces": [],
