@@ -105,6 +105,109 @@ def generate_default_dict(pure_1):
     return default_info
 
 
+def generate_subscription_assets_dict(pure_1):
+    assets_info = {}
+    assets = list(pure_1.get_subscription_assets().items)
+    if assets:
+        for asset in range(0, len(assets)):
+            name = assets[asset].name
+            activation = time.strftime(
+                "%Y-%m-%d %H:%M:%S UTC",
+                time.gmtime(assets[asset].activation_date / 1000),
+            )
+            assets_info[name] = {
+                "install_location": assets[asset].install_location,
+                "activation_date": activation,
+                "version": assets[asset].version,
+                "model": assets[asset].model,
+                "chassis_sn": assets[asset].chassis_serial_number,
+                "effective_use": assets[asset].effective_use,
+                "utilization": assets[asset].utilization,
+                "total_usable": assets[asset].total_usable,
+                "total_reduction": assets[asset].total_reduction,
+                "subscription_name": assets[asset].subscription.name,
+                "subscription_id": assets[asset].subscription.id,
+                "license_name": assets[asset].license.name,
+                "license_id": assets[asset].license.id,
+            }
+    return assets_info
+
+
+def generate_subscription_licenses_dict(pure_1):
+    licenses_info = {}
+    licenses = list(pure_1.get_subscription_licenses().items)
+    if licenses:
+        for license in range(0, len(licenses)):
+            name = licenses[license].name
+            start_date = time.strftime(
+                "%Y-%m-%d %H:%M:%S UTC",
+                time.gmtime(licenses[license].start_date / 1000),
+            )
+            expiration_date = time.strftime(
+                "%Y-%m-%d %H:%M:%S UTC",
+                time.gmtime(licenses[license].expiration_date / 1000),
+            )
+            last_updated = time.strftime(
+                "%Y-%m-%d %H:%M:%S UTC",
+                time.gmtime(licenses[license].last_updated_date / 1000),
+            )
+            licenses_info[name] = {
+                "start_date": start_date,
+                "expiration_date": expiration_date,
+                "last_updated": last_updated,
+                "marketplace_partner": licenses[license].marketplace_partner.name,
+                "service_tier": licenses[license].service_tier,
+                "location": licenses[license].location,
+                "pre_ratio": licenses[license].pre_ratio,
+                "energy_usage": licenses[license].energy_usage,
+                "subscription": licenses[license].subscription.name,
+                "average_on_demand": {
+                    "data": licenses[license].average_on_demand.data,
+                    "unit": licenses[license].average_on_demand.unit,
+                    "metric": licenses[license].average_on_demand.metric.name,
+                },
+                "reservation": {
+                    "data": licenses[license].reservation.data,
+                    "unit": licenses[license].reservation.unit,
+                    "metric": licenses[license].reservation.metric.name,
+                },
+                "usage": {
+                    "data": licenses[license].usage.data,
+                    "unit": licenses[license].usage.unit,
+                    "metric": licenses[license].usage.metric.name,
+                },
+                "quarter_on_demand": {
+                    "data": licenses[license].quarter_on_demand.data,
+                    "unit": licenses[license].quarter_on_demand.unit,
+                    "metric": licenses[license].quarter_on_demand.metric.name,
+                },
+                "resources": {},
+            }
+            for resource in range(0, len(licenses[license].resources)):
+                res_name = licenses_info[license].resources[resource].name
+                res_start_time = time.strftime(
+                    "%Y-%m-%d %H:%M:%S UTC",
+                    time.gmtime(
+                        licenses[license].resources[resource].activation_time / 1000
+                    ),
+                )
+                licenses_info[license].resources[res_name] = {
+                    "resource_type": licenses_info[license]
+                    .resources[resource]
+                    .resource_type,
+                    "fqdn": licenses_info[license].resources[resource].fqdn,
+                    "activation_time": res_start_time,
+                    "usage": {
+                        "data": licenses[license].resources[resource].usage.data,
+                        "unit": licenses[license].resources[resource].usage.unit,
+                        "metric": licenses[license]
+                        .resources[resource]
+                        .usage.metric.name,
+                    },
+                }
+    return licenses_info
+
+
 def generate_subscriptions_dict(pure_1):
     subscriptions_info = {}
     subscriptions = list(pure_1.get_subscriptions().items)
@@ -124,6 +227,13 @@ def generate_subscriptions_dict(pure_1):
                 "expiration_date": end_time,
                 "service": subscriptions[subscription].service,
                 "status": subscriptions[subscription].status,
+                "org_name": getattr(subscriptions[subscription], "org_name", None),
+                "partner_name": getattr(
+                    subscriptions[subscription], "partner_name", None
+                ),
+                "subscription_term": getattr(
+                    subscriptions[subscription], "subscription_term", None
+                ),
             }
     return subscriptions_info
 
@@ -564,6 +674,8 @@ def main():
         info["appliances"] = generate_appliances_dict(module, pure_1)
     if "subscriptions" in subset or "all" in subset:
         info["subscriptions"] = generate_subscriptions_dict(pure_1)
+        info["subscription_licenses"] = generate_subscription_licenses_dict(pure_1)
+        # info["subscription_assets"] = generate_subscription_assets_dict(pure_1)
     if "contracts" in subset or "all" in subset:
         info["contracts"] = generate_contract_dict(pure_1)
     if "environmental" in subset or "all" in subset:
