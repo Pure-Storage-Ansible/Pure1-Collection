@@ -5,6 +5,24 @@ Purestorage.Pure1 Release Notes
 .. contents:: Topics
 
 
+v1.3.0
+======
+
+Minor Changes
+-------------
+
+- Fixed issue with use of environmental variables for key, key file and password
+- password parameter is now optional, to allow for unprotected key files
+- pure1_info.py - Added more subscrition detail
+
+New Modules
+-----------
+
+- purestorage.pure1.pure1_nics - Collect network interface information from Pure1
+- purestorage.pure1.pure1_pods - Collect FlashArray pod information from Pure1
+- purestorage.pure1.pure1_ports - Collect FlashArray port information from Pure1
+- purestorage.pure1.pure1_volumes - Collect volumes information from Pure1
+
 v1.2.0
 ======
 

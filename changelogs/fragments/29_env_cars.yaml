@@ -1,3 +1,0 @@
-minor_changes:
- - password parameter is now optional, to allow for unprotected key files
- - Fized issue with use of environmental variables for key, key file and password
