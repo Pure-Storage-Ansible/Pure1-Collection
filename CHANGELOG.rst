@@ -11,7 +11,7 @@ v1.3.0
 Minor Changes
 -------------
 
-- Fized issue with use of environmental variables for key, key file and password
+- Fixed issue with use of environmental variables for key, key file and password
 - password parameter is now optional, to allow for unprotected key files
 - pure1_info.py - Added more subscrition detail
 
