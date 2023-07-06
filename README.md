@@ -20,8 +20,13 @@ The Pure Storage Pure1 collection consists of the latest versions of the Pure1 m
 
 ## Available Modules
 
+- pure1_alerts - Get alerts from Pure1
 - pure1_array_tags - Manage array tags for managed devices in Pure1
 - pure1_info - Get information on fleet configuration
+- pure1_nics - Get network interface information from Pure1
+- pure1_pods - Get FlashArray pod information from Pure1
+- pure1_ports - Get port information from Pure1
+- pure1_volumes - Get FlashArray volume information from Pure1
 
 ## Instructions
 

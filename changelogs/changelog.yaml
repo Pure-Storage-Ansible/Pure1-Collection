@@ -3,32 +3,55 @@ releases:
   1.0.0:
     changes:
       major_changes:
-        - pure1_array_tags - New module to manage Pure1 array tags
-        - pure1_info - New module for gathering Pure1 information
+      - pure1_array_tags - New module to manage Pure1 array tags
+      - pure1_info - New module for gathering Pure1 information
     fragments:
-      - 4_add_first_modules.yaml
+    - 4_add_first_modules.yaml
     release_date: '2021-06-28'
   1.1.0:
     changes:
       minor_changes:
-        - All - Update documentation to use FQCNs
-        - pure1_info - Add array performance data and load (FA only). Add support contract
-          status.
+      - All - Update documentation to use FQCNs
+      - pure1_info - Add array performance data and load (FA only). Add support contract
+        status.
     fragments:
-      - 13_fcqn.yaml
-      - 8_add_perf_data.yaml
+    - 13_fcqn.yaml
+    - 8_add_perf_data.yaml
     modules:
-      - description: Collect array alerts from Pure1 based on severity
-        name: pure1_alerts
-        namespace: ''
-      - description: Collect array netowrk interface details from Pure1
-        name: pure1_network_interfaces
-        namespace: ''
+    - description: Collect array alerts from Pure1 based on severity
+      name: pure1_alerts
+      namespace: ''
+    - description: Collect array netowrk interface details from Pure1
+      name: pure1_network_interfaces
+      namespace: ''
     release_date: '2023-01-26'
   1.2.0:
     changes:
       minor_changes:
-        - pure1_info - Add environmental subset for ESG data and platform insights
+      - pure1_info - Add environmental subset for ESG data and platform insights
     fragments:
-      - 20_add_esg.yaml
+    - 20_add_esg.yaml
     release_date: '2023-04-11'
+  1.3.0:
+    changes:
+      minor_changes:
+      - Fized issue with use of environmental variables for key, key file and password
+      - password parameter is now optional, to allow for unprotected key files
+      - pure1_info.py - Added more subscrition detail
+    fragments:
+    - 28_subscr_info.yaml
+    - 29_env_cars.yaml
+    modules:
+    - description: Collect network interface information from Pure1
+      name: pure1_nics
+      namespace: ''
+    - description: Collect FlashArray pod information from Pure1
+      name: pure1_pods
+      namespace: ''
+    - description: Collect FlashArray port information from Pure1
+      name: pure1_ports
+      namespace: ''
+    - description: Collect volumes information from Pure1
+      name: pure1_volumes
+      namespace: ''
+    release_date: '2023-07-06'
