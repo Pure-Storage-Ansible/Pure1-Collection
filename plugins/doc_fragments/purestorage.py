@@ -38,13 +38,13 @@ options:
   password:
     description:
       - The password of the private key, if encrypted.
-      - Defaults to the set environment variable under PURE1_PRIVATE_KEY_FILE.
+      - Defaults to the set environment variable under PURE1_PRIVATE_PASSWORD.
     type: str
-    required: true
 notes:
   - This module requires the C(py-pure-client) Python library
   - You must set C(PURE1_APP_ID) and C(PURE1_PRIVATE_KEY_FILE) environment variables
     if I(app_id) and I(key_file) arguments are not passed to the module directly
+  - C(PURE1_PRIVATE_PASSWORD) environmental variable | I(password) is optional
 requirements:
   - python >= 3.4
   - py-pure-client >= 1.14.1

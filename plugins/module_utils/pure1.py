@@ -59,17 +59,33 @@ def get_pure1(module):
     if HAS_PYPURECLIENT:
         if app_id and key_file:
             try:
-                pure_1 = pure1.Client(
-                    app_id=app_id,
-                    private_key_file=key_file,
-                    private_key_password=module.params["password"],
-                )
+                if module.params["password"]:
+                    pure_1 = pure1.Client(
+                        app_id=app_id,
+                        private_key_file=key_file,
+                        private_key_password=module.params["password"],
+                    )
+                else:
+                    pure_1 = pure1.Client(
+                        app_id=app_id,
+                        private_key_file=key_file,
+                    )
                 pure_1._api_client.set_default_header("User-Agent", user_agent)
             except Exception:
                 module.fail_json(msg="Unknown failure. Please contact Pure Support")
         elif environ.get("PURE1_APP_ID") and environ.get("PURE1_PRIVATE_KEY_FILE"):
             try:
-                pure_1 = pure1.Client()
+                if module.params["password"]:
+                    pure_1 = pure1.Client(
+                        app_id=environ.get("PURE1_APP_ID"),
+                        private_key_file=environ.get("PURE1_PRIVATE_KEY_FILE"),
+                        private_key_password=environ.get("PURE1_PRIVATE_PASSWORD"),
+                    )
+                else:
+                    pure_1 = pure1.Client(
+                        app_id=app_id,
+                        private_key_file=key_file,
+                    )
                 pure_1._api_client.set_default_header("User-Agent", user_agent)
             except Exception:
                 module.fail_json(msg="Unknown failure. Please contact Pure Support")
@@ -97,5 +113,5 @@ def pure1_argument_spec():
     return dict(
         app_id=dict(no_log=True, required=True),
         key_file=dict(no_log=False, required=True),
-        password=dict(no_log=True, required=True),
+        password=dict(no_log=True),
     )
