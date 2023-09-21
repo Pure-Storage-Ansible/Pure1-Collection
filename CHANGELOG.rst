@@ -5,6 +5,14 @@ Purestorage.Pure1 Release Notes
 .. contents:: Topics
 
 
+v1.4.0
+======
+
+Minor Changes
+-------------
+
+- pure1_info - Added invoices subset
+
 v1.3.0
 ======
 
