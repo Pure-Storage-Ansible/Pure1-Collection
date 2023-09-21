@@ -55,3 +55,10 @@ releases:
       name: pure1_volumes
       namespace: ''
     release_date: '2023-07-06'
+  1.4.0:
+    changes:
+      minor_changes:
+      - pure1_info - Added invoices subset
+    fragments:
+    - 32_add_invoices.yaml
+    release_date: '2023-09-21'
