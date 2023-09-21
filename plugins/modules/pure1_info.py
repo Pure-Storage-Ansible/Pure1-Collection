@@ -32,7 +32,7 @@ options:
     description:
       - When supplied, this argument will define the information to be collected.
         Possible values for this include all, minimum, appliances, subscriptions,
-        contracts and environmental.
+        contracts, environmental and invoices.
     type: list
     elements: str
     required: false
@@ -392,6 +392,109 @@ def generate_contract_dict(pure_1):
     return contract_info
 
 
+def generate_invoices_dict(module, pure_1):
+    invoices_info = {}
+    res = pure_1.get_invoices()
+    if res.status_code == 200:
+        invoices = list(res.items)
+        for invoice in len(0, len(invoices)):
+            name = invoices[invoice].id
+            invoice_date = getattr(invoices[invoice], "date", None)
+            invoice_due_date = getattr(invoices[invoice], "due_date", None)
+            invoice_ship_date = getattr(invoices[invoice], "ship_date", None)
+            if invoice_date:
+                inv_date = datetime.datetime.fromtimestamp(
+                    int(invoice_date / 1000)
+                ).strftime("%Y-%m-%d")
+            else:
+                inv_date = None
+            if invoice_due_date:
+                inv_due_date = datetime.datetime.fromtimestamp(
+                    int(invoice_due_date / 1000)
+                ).strftime("%Y-%m-%d")
+            else:
+                inv_due_date = None
+            if invoice_ship_date:
+                inv_ship_date = datetime.datetime.fromtimestamp(
+                    int(invoice_ship_date / 1000)
+                ).strftime("%Y-%m-%d")
+            else:
+                inv_date = None
+
+            invoices_info[name] = {
+                "lines": {},
+                "status": getattr(invoices[invoice], "status", None),
+                "amount": getattr(invoices[invoice], "amount", 0),
+                "date": inv_date,
+                "due_date": inv_due_date,
+                "ship_date": inv_ship_date,
+                "payment_terms": getattr(invoices[invoice], "payment_terms", None),
+                "sales_rep": getattr(invoices[invoice], "sales_representative", None),
+                "partner_po": getattr(
+                    invoices[invoice], "partner_purchase_order", None
+                ),
+                "end_user_po": getattr(
+                    invoices[invoice], "end_user_purchase_order", None
+                ),
+                "end_user_name": getattr(
+                    invoices[invoice], "end_user_purchase_name", None
+                ),
+                "subscription_id": getattr(invoices[invoice].subscription, "id", None),
+                "subscription_name": getattr(
+                    invoices[invoice].subscription, "name", None
+                ),
+            }
+            for line in range(0, len(invoices[invoice].lines)):
+                line_start_date = (
+                    getattr(invoices[invoice].lines[line], "start_date", None),
+                )
+                line_end_date = (
+                    getattr(invoices[invoice].lines[line], "end_date", None),
+                )
+                if line_start_date:
+                    start_date = datetime.datetime.fromtimestamp(
+                        int(line_start_date / 1000)
+                    ).strftime("%Y-%m-%d")
+                else:
+                    start_date = None
+                if line_end_date:
+                    end_date = datetime.datetime.fromtimestamp(
+                        int(line_end_date / 1000)
+                    ).strftime("%Y-%m-%d")
+                else:
+                    end_date = None
+                invoices_info[invoice]["lines"].append(
+                    {
+                        "item": getattr(invoices[invoice].lines[line], "item", None),
+                        "quantity": getattr(
+                            invoices[invoice].lines[line], "quantity", 0
+                        ),
+                        "description": getattr(
+                            invoices[invoice].lines[line], "description", None
+                        ),
+                        "start_date": start_date,
+                        "end_date": end_date,
+                        "components": invoices[invoice].lines[line]["components"],
+                        "unit_price": getattr(
+                            invoices[invoice].lines[line], "unit_price", 0
+                        ),
+                        "amount": getattr(invoices[invoice].lines[line], "amount", 0),
+                        "tax_percentage": getattr(
+                            invoices[invoice].lines[line].tax, "percentage", 0
+                        ),
+                        "tax_amount": getattr(
+                            invoices[invoice].lines[line].tax, "amount", 0
+                        ),
+                        "tax_exemption_statement": getattr(
+                            invoices[invoice].lines[line].tax,
+                            "exemption_statement",
+                            None,
+                        ),
+                    }
+                )
+    return invoices_info
+
+
 def generate_appliances_dict(module, pure_1):
     names_info = {"FlashArray": {}, "FlashBlade": {}, "ObjectEngine": {}}
     appliances = list(pure_1.get_arrays().items)
@@ -658,6 +761,7 @@ def main():
         "subscriptions",
         "contracts",
         "environmental",
+        "invoices",
     )
     subset_test = (test in valid_subsets for test in subset)
     if not all(subset_test):
@@ -680,6 +784,8 @@ def main():
         info["contracts"] = generate_contract_dict(pure_1)
     if "environmental" in subset or "all" in subset:
         info["environmental"] = generate_esg_dict(module, pure_1)
+    if "invoices" in subset or "all" in subset:
+        info["invoices"] = generate_invoices_dict(module, pure_1)
 
     module.exit_json(changed=False, pure1_info=info)
 
