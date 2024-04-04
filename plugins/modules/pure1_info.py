@@ -93,15 +93,15 @@ def generate_default_dict(pure_1):
     default_info["volumes"] = pure_1.get_volumes().total_item_count
     default_info["volume_snapshots"] = pure_1.get_volume_snapshots().total_item_count
     default_info["filesystems"] = pure_1.get_file_systems().total_item_count
-    default_info[
-        "filesystem_snapshots"
-    ] = pure_1.get_file_system_snapshots().total_item_count
+    default_info["filesystem_snapshots"] = (
+        pure_1.get_file_system_snapshots().total_item_count
+    )
     default_info["buckets"] = pure_1.get_buckets().total_item_count
     default_info["directories"] = pure_1.get_directories().total_item_count
     default_info["pods"] = pure_1.get_pods().total_item_count
-    default_info[
-        "object_store_accounts"
-    ] = pure_1.get_object_store_accounts().total_item_count
+    default_info["object_store_accounts"] = (
+        pure_1.get_object_store_accounts().total_item_count
+    )
     return default_info
 
 
