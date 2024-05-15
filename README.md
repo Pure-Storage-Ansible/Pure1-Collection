@@ -6,9 +6,9 @@
 
 # Pure Storage Pure1 Collection
 
-The Pure Storage Pure1 collection consists of the latest versions of the Pure1 modules.
+## Description
 
-## Modules
+The Pure Storage Pure1 collection consists of the latest versions of the Pure1 modules.
 
 ## Requirements
 
@@ -19,7 +19,77 @@ The Pure Storage Pure1 collection consists of the latest versions of the Pure1 m
 - py-pure-client
 - datetime
 
-## Available Modules
+## Installation
+
+Before using this collection, you need to install it with the Ansible Galaxy command-line tool:
+
+```
+ansible-galaxy collection install purestorage.pure1
+```
+
+You can also include it in a `requirements.yml` file and install it with `ansible-galaxy collection install -r requirements.yml`, using the format:
+
+```
+collections:
+  - name: purestorage.pure1
+```
+
+Note that if you install the collection from Ansible Galaxy, it will not be upgraded automatically when you upgrade the Ansible package. 
+
+To upgrade the collection to the latest available version, run the following command:
+
+```
+ansible-galaxy collection install purestorage.pure1 --upgrade
+```
+
+You can also install a specific version of the collection, for example, if you need to downgrade when something is broken in the latest version (please report an issue in this repository). Use the following syntax to install version 1.0.0:
+
+```
+ansible-galaxy collection install purestorage.pure1:==1.0.0
+```
+
+See [using Ansible collections](https://docs.ansible.com/ansible/devel/user_guide/collections_using.html) for more details.
+
+### Example Playbook
+```yaml
+- hosts: localhost
+  tasks:
+  - name: Collect information for Pure Storage fleet in Pure1
+    purestorage.pure1.pure1_info:
+      gather_subset: all
+      app_id: <Pure1 API Application ID>
+      key_file: <private key file name>
+      password: <private key password>
+```
+
+## Contributing
+
+There are many ways in which you can participate in the project, for example:
+
+* Submit bugs and feature requests, and help us verify as they are checked in
+* Review source code changes
+* Review the documentation and make pull requests for anything from typos to new content
+* If you are interested in fixing issues and contributing directly to the code base, please see the details below:
+    1. Fork this project into your account if you are a first-time contributor.
+    2. Create a branch based on the latest `master` branch, commit your changes on this branch.
+    3. You may merge the Pull Request in once you have the sign-off of two other developers, or if you do not have permission to do that, you may request the second reviewer to merge it for you.
+ 
+## Support
+
+Only the latest release of this collection is supported.
+
+For support please raise a GitHub Issue on this repository.
+
+If you are a Pure Storage customer, you may log a support call with the Pure Storage Support team ([support\@purestorage.com](mailto:support@purestorage.com?subject=Pure1-Ansible-Collection))
+
+If you have a Red Hat Ansible support contract, as this is a Certified collection, you may log a support call with Red Hat directly.
+  
+## Release Notes
+
+Release notes for this collection can be found [here](https://github.com/Pure-Storage-Ansible/Pure1-Collection/releases)
+
+## Related Information
+### Available Modules
 
 - pure1_alerts - Get alerts from Pure1
 - pure1_array_tags - Manage array tags for managed devices in Pure1
@@ -29,32 +99,10 @@ The Pure Storage Pure1 collection consists of the latest versions of the Pure1 m
 - pure1_ports - Get port information from Pure1
 - pure1_volumes - Get FlashArray volume information from Pure1
 
-## Instructions
-
-Install the Pure Storage Pure1 collection on your Ansible management host.
-
-- Using ansible-galaxy (Ansible 2.9 or later):
-```
-ansible-galaxy collection install purestorage.pure1 -p ~/.ansible/collections
-```
-
-## Example Playbook
-```yaml
-- hosts: localhost
-  collections:
-    - purestorage.pure1
-  tasks:
-  - name: Collect information for Pure Storage fleet in Pure1
-    pure1_info:
-      gather_subset: all
-      app_id: <Pure1 API Application ID>
-      key_file: <private key file name>
-      password: <private key password>
-```
-
 ## License
 
 [BSD-2-Clause](https://directory.fsf.org/wiki?title=License:FreeBSD)
+
 [GPL-3.0-or-later](https://www.gnu.org/licenses/gpl-3.0.en.html)
 
 ## Author
