@@ -87,6 +87,8 @@ def generate_volumes_dict(module, pure_1):
             "destroyed": volumes[volume].destroyed,
             "provisioned": volumes[volume].provisioned,
             "source": [],
+            "serial": getattr(volumes[volume], "serial", None),
+            "pod": [],
             "array": {
                 "name": volumes[volume].arrays[0].name,
                 "fqdn": volumes[volume].arrays[0].fqdn,
@@ -94,6 +96,8 @@ def generate_volumes_dict(module, pure_1):
         }
         if getattr(volumes[volume], "source", None):
             volumes_info[serial]["source"] = volumes[volume].source.name
+        if getattr(volumes[volume], "pod", None):
+            volumes_info[serial]["pod"] = volumes[volume].pod.name
     return volumes_info
 
 
