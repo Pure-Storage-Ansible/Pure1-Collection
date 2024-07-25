@@ -45,7 +45,6 @@ EXAMPLES = r"""
 - name: show network interface information
   debug:
     msg: "{{ pure1_info['pure1_nics']['nics'] }}"
-
 """
 
 RETURN = r"""

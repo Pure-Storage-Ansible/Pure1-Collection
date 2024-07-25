@@ -45,7 +45,6 @@ EXAMPLES = r"""
 - name: show ports information
   debug:
     msg: "{{ pure1_info['pure1_ports']['ports'] }}"
-
 """
 
 RETURN = r"""

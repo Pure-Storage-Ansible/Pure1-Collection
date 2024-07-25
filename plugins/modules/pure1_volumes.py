@@ -45,7 +45,6 @@ EXAMPLES = r"""
 - name: show volumes information
   debug:
     msg: "{{ pure1_info['pure1_volumes']['serial_numbers'] }}"
-
 """
 
 RETURN = r"""

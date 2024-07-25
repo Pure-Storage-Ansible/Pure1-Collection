@@ -509,17 +509,18 @@ def generate_appliances_dict(module, pure_1):
                 "os_version": appliances[appliance].version,
                 "model": appliances[appliance].model,
                 "fqdn": fqdn,
-                "tags": []
+                "tags": [],
             }
             res = pure_1.get_array_tags(resource_names=[name])
             if res.status_code == 200:
                 tags = list(res.items)
                 for tag in range(0, len(tags)):
                     names_info["FlashArray"][name]["tags"].append(
-                        {"key": tags[tag].key,
-                         "value": tags[tag].value,
-                         "org_id": tags[tag].tag_organization_id,
-                         "namespace": tags[tag].namespace,
+                        {
+                            "key": tags[tag].key,
+                            "value": tags[tag].value,
+                            "org_id": tags[tag].tag_organization_id,
+                            "namespace": tags[tag].namespace,
                         }
                     )
             try:
@@ -649,10 +650,11 @@ def generate_appliances_dict(module, pure_1):
                 tags = list(res.items)
                 for tag in range(0, len(tags)):
                     names_info["ObjectEngine"][name]["tags"].append(
-                        {"key": tags[tag].key,
-                         "value": tags[tag].value,
-                         "org_id": tags[tag].tag_organization_id,
-                         "namespace": tags[tag].namespace,
+                        {
+                            "key": tags[tag].key,
+                            "value": tags[tag].value,
+                            "org_id": tags[tag].tag_organization_id,
+                            "namespace": tags[tag].namespace,
                         }
                     )
         elif appliances[appliance].os == "Purity//FB":
@@ -667,10 +669,11 @@ def generate_appliances_dict(module, pure_1):
                 tags = list(res.items)
                 for tag in range(0, len(tags)):
                     names_info["FlashBlade"][name]["tags"].append(
-                        {"key": tags[tag].key,
-                         "value": tags[tag].value,
-                         "org_id": tags[tag].tag_organization_id,
-                         "namespace": tags[tag].namespace,
+                        {
+                            "key": tags[tag].key,
+                            "value": tags[tag].value,
+                            "org_id": tags[tag].tag_organization_id,
+                            "namespace": tags[tag].namespace,
                         }
                     )
             try:
