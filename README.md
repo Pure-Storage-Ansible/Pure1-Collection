@@ -93,6 +93,7 @@ Release notes for this collection can be found [here](https://github.com/Pure-St
 
 - pure1_alerts - Get alerts from Pure1
 - pure1_array_tags - Manage array tags for managed devices in Pure1
+- pure1_drives - Get array drives information from Pure1
 - pure1_info - Get information on fleet configuration
 - pure1_nics - Get network interface information from Pure1
 - pure1_pods - Get FlashArray pod information from Pure1
