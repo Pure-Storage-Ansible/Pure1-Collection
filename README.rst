@@ -6,7 +6,7 @@
 Pure1-Collection
 ================
 
-Ansible Collection for Pure Storage Pure1.
+Ansible Collection for Everpure Pure1.
 
 .. |License| image:: https://img.shields.io/badge/license-GPL%20v3.0-brightgreen.svg
    :target: COPYING.GPLv3
