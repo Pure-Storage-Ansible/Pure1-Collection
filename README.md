@@ -4,11 +4,11 @@
 <img src="https://github.com/Pure-Storage-Ansible/Pure1-Collection/workflows/Pure%20Storage%20Ansible%20CI/badge.svg">
 <a href="https://github.com/psf/black"><img src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
 
-# Pure Storage Pure1 Collection
+# Everpure Pure1 Collection
 
 ## Description
 
-The Pure Storage Pure1 collection consists of the latest versions of the Pure1 modules.
+The Everpure Pure1 collection consists of the latest versions of the Pure1 modules.
 
 ## Requirements
 
@@ -108,4 +108,4 @@ Release notes for this collection can be found [here](https://github.com/Pure-St
 
 ## Author
 
-This collection was created in 2020 by [Simon Dodsley](@sdodsley) for, and on behalf of, the [Pure Storage Ansible Team](pure-ansible-team@purestorage.com)
+This collection was created in 2020 by [Simon Dodsley](@sdodsley) for, and on behalf of, the [Everpure Ansible Team](pure-ansible-team@purestorage.com)
