@@ -1,7 +1,7 @@
-<a href="https://github.com/Pure-Storage-Ansible/Pure1-Collection/releases/latest"><img src="https://img.shields.io/github/v/tag/Pure-Storage-Ansible/Pure1-Collection?label=release">
+<a href="https://github.com/Everpure-Ansible/Pure1-Collection/releases/latest"><img src="https://img.shields.io/github/v/tag/Everpure-Ansible/Pure1-Collection?label=release">
 <a href="COPYING.GPLv3"><img src="https://img.shields.io/badge/license-GPL%20v3.0-brightgreen.svg"></a>
-<img src="https://cla-assistant.io/readme/badge/Pure-Storage-Ansible/Pure1-Collection">
-<img src="https://github.com/Pure-Storage-Ansible/Pure1-Collection/workflows/Pure%20Storage%20Ansible%20CI/badge.svg">
+<img src="https://cla-assistant.io/readme/badge/Everpure-Ansible/Pure1-Collection">
+<img src="https://github.com/Everpure-Ansible/Pure1-Collection/workflows/Everpure%20Ansible%20CI/badge.svg">
 <a href="https://github.com/psf/black"><img src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
 
 # Everpure Pure1 Collection
@@ -86,7 +86,7 @@ If you have a Red Hat Ansible support contract, as this is a Certified collectio
   
 ## Release Notes
 
-Release notes for this collection can be found [here](https://github.com/Pure-Storage-Ansible/Pure1-Collection/releases)
+Release notes for this collection can be found [here](https://github.com/Everpure-Ansible/Pure1-Collection/releases)
 
 ## Related Information
 ### Available Modules
