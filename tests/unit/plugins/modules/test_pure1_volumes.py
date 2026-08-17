@@ -32,6 +32,7 @@ from plugins.modules.pure1_volumes import generate_volumes_dict
 def _make_volume(**overrides):
     """Build a minimal Pure1 volume object as returned by the SDK."""
     volume = types.SimpleNamespace(
+        id="abcd-1234",
         serial="ABC123",
         name="vol1",
         created=1609459200000,  # 2021-01-01 00:00:00 UTC, in milliseconds
@@ -68,6 +69,7 @@ class TestGenerateVolumesDict:
         client.get_volumes.assert_called_once_with()
         assert "ABC123" in result
         entry = result["ABC123"]
+        assert entry["id"] == "abcd-1234"
         assert entry["name"] == "vol1"
         assert entry["created"] == "2021-01-01 00:00:00 UTC"
         assert entry["provisioned"] == 1073741824
@@ -75,6 +77,31 @@ class TestGenerateVolumesDict:
             "name": "array1",
             "fqdn": "array1.example.com",
         }
+        assert entry["arrays"] == [
+            {"name": "array1", "fqdn": "array1.example.com"},
+        ]
+
+    def test_volume_spanning_multiple_arrays(self):
+        """A volume on more than one array lists them all under arrays."""
+        module = Mock()
+        module.params = {"array": None}
+        volume = _make_volume(
+            arrays=[
+                types.SimpleNamespace(name="array1", fqdn="array1.example.com"),
+                types.SimpleNamespace(name="array2", fqdn="array2.example.com"),
+            ],
+        )
+        client = _client_returning([volume])
+
+        result = generate_volumes_dict(module, client)
+
+        entry = result["ABC123"]
+        # array (singular) stays the first array for backwards compatibility
+        assert entry["array"] == {"name": "array1", "fqdn": "array1.example.com"}
+        assert entry["arrays"] == [
+            {"name": "array1", "fqdn": "array1.example.com"},
+            {"name": "array2", "fqdn": "array2.example.com"},
+        ]
 
     def test_no_source_or_pod_defaults_to_empty_list(self):
         """Without a source/pod the fields stay as empty lists."""
